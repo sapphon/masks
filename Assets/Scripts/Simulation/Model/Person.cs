@@ -15,9 +15,14 @@ public class Person : MonoBehaviour
 
     void Start()
     {
+        chooseDestinationAndSpeed();
+        saveNormalMaterial();
+    }
+
+    private void chooseDestinationAndSpeed()
+    {
         chooseMovementDestination();
         chooseWalkSpeed();
-        saveNormalMaterial();
     }
 
     void saveNormalMaterial()
@@ -43,6 +48,19 @@ public class Person : MonoBehaviour
         {
             this.isInfected = true;
             GetComponent<MeshRenderer>().material = this.infectedMaterial;
+        }
+    }
+
+    void Update()
+    {
+        checkArrival();
+    }
+
+    void checkArrival()
+    {
+        if (Vector3.Distance(this.transform.position, destination.transform.position) < 2)
+        {
+            chooseDestinationAndSpeed();
         }
     }
 }
