@@ -19,13 +19,11 @@ public class InfectiousVolume : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("EXIT");
         Person exiter = other.gameObject.GetComponent<Person>();
         if (exiter != null)
         {
             float timeSpentInArea = Time.timeSinceLevelLoad - this.objectsEntered[other.gameObject];
-            Debug.Log("Time Spent: " + timeSpentInArea);
-            if (timeSpentInArea > 1 * (exiter.isMasked ? 3 : 1))
+            if (timeSpentInArea > .25 * (exiter.isMasked ? 1.33 : 1))
             {
                 exiter.infect();
             }
