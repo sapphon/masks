@@ -12,6 +12,7 @@ public class Simulation : MonoBehaviour
         infectionRadius = 3;
         people = new List<Person>(GameObject.FindObjectsOfType<Person>());
         infectPatientZero();
+        maskSomePeople();
     }
     
     void Update()
@@ -50,6 +51,23 @@ public class Simulation : MonoBehaviour
 
     private void infectPatientZero()
     {
-        infect(new List<Person>{people[new System.Random().Next(people.Count)]});
+        people[new System.Random().Next(people.Count)].infect();
+    }
+
+    private void maskSomePeople()
+    {
+        int numberToMask = people.Count / 3;
+        for (int i = 0; i < numberToMask; i++)
+        {
+            Person toMask = people[new System.Random().Next(people.Count)];
+            if (toMask.isMasked)
+            {
+                i--;
+            }
+            else
+            {
+                toMask.mask();
+            }
+        }
     }
 }
