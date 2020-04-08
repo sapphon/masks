@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 296985914513790460}
   - component: {fileID: 296985914513790434}
   - component: {fileID: 557727855}
+  - component: {fileID: 557727859}
   m_Layer: 0
   m_Name: Person
   m_TagString: Untagged
@@ -91,7 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa514e9358aee2f419434f6c9d7a5c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infectedMaterial: {fileID: 2100000, guid: a3f7e585f9ac4dd429cf6acc35b393bb, type: 2}
 --- !u!195 &557727855
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -114,3 +114,16 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!135 &557727859
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296985914513790432}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
