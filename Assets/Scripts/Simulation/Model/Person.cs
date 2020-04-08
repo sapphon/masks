@@ -6,11 +6,19 @@ using UnityEngine;
 public class Person : MonoBehaviour
 {
     private Vector3 velocity;
+    private Boolean isInfected;
+    public Material infectedMaterial;
+    private Material normalMaterial;
 
-    // Start is called before the first frame update
     void Start()
     {
         chooseMovementVector();
+        saveNormalMaterial();
+    }
+
+    void saveNormalMaterial()
+    {
+        this.normalMaterial = GetComponent<MeshRenderer>().material;
     }
 
     void chooseMovementVector()
@@ -24,9 +32,16 @@ public class Person : MonoBehaviour
         this.gameObject.transform.Translate(velocity * Time.deltaTime);
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         move();
     }
+
+    void infect()
+    {
+        this.isInfected = true;
+        GetComponent<MeshRenderer>().material = this.infectedMaterial;
+    }
+
+
 }
