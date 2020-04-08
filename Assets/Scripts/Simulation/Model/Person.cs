@@ -15,7 +15,7 @@ public class Person : MonoBehaviour
 
     void chooseMovementVector()
     {
-        this.velocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(-1f, 1f)).normalized;
+        this.velocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(-1f, 1f)).normalized * UnityEngine.Random.Range(1f, 2f);
     }
 
     
