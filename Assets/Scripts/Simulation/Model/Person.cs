@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Experimental.PlayerLoop;
+using UnityEngine.UI;
 
 public class Person : MonoBehaviour
 {
     private Vector3 velocity;
     public Boolean isInfected { get; private set; }
+    public Boolean isMasked { get; private set; }
     public Material infectedMaterial;
     private Material normalMaterial;
     private Location destination;
@@ -47,8 +49,15 @@ public class Person : MonoBehaviour
         if (!this.isInfected)
         {
             this.isInfected = true;
-            GetComponent<MeshRenderer>().material = this.infectedMaterial;
+            setMaterial();
+
         }
+    }
+
+    public void mask()
+    {
+        this.isMasked = true;
+        setMaterial();
     }
 
     void Update()
@@ -61,6 +70,14 @@ public class Person : MonoBehaviour
         if (Vector3.Distance(this.transform.position, destination.transform.position) < 2)
         {
             chooseDestinationAndSpeed();
+        }
+    }
+
+    void setMaterial()
+    {
+        if (this.isInfected)
+        {
+            GetComponent<MeshRenderer>().material = this.infectedMaterial;
         }
     }
 }
