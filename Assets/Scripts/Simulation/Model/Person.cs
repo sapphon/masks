@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Experimental.PlayerLoop;
 
 public class Person : MonoBehaviour
 {
@@ -9,10 +11,12 @@ public class Person : MonoBehaviour
     public Boolean isInfected { get; private set; }
     public Material infectedMaterial;
     private Material normalMaterial;
+    private Location destination;
 
     void Start()
     {
-        chooseMovementVector();
+        chooseMovementDestination();
+        chooseWalkSpeed();
         saveNormalMaterial();
     }
 
@@ -21,20 +25,16 @@ public class Person : MonoBehaviour
         this.normalMaterial = GetComponent<MeshRenderer>().material;
     }
 
-    void chooseMovementVector()
+    void chooseMovementDestination()
     {
-        this.velocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(-1f, 1f)).normalized * UnityEngine.Random.Range(1f, 2f);
+        var possibleDestinations = GameObject.FindObjectsOfType<Location>();
+        this.destination = possibleDestinations[UnityEngine.Random.Range(0, possibleDestinations.Length)];
+        GetComponent<NavMeshAgent>().destination = destination.gameObject.transform.position;
     }
 
-    
-    void move()
+    void chooseWalkSpeed()
     {
-        this.gameObject.transform.Translate(velocity * Time.deltaTime);
-    }
-
-    void FixedUpdate()
-    {
-        move();
+        GetComponent<NavMeshAgent>().speed = UnityEngine.Random.Range(5, 10);
     }
 
     public void infect()
