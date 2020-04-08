@@ -6,7 +6,7 @@ using UnityEngine;
 public class Person : MonoBehaviour
 {
     private Vector3 velocity;
-    private Boolean isInfected;
+    public Boolean isInfected { get; private set; }
     public Material infectedMaterial;
     private Material normalMaterial;
 
@@ -37,11 +37,12 @@ public class Person : MonoBehaviour
         move();
     }
 
-    void infect()
+    public void infect()
     {
-        this.isInfected = true;
-        GetComponent<MeshRenderer>().material = this.infectedMaterial;
+        if (!this.isInfected)
+        {
+            this.isInfected = true;
+            GetComponent<MeshRenderer>().material = this.infectedMaterial;
+        }
     }
-
-
 }
