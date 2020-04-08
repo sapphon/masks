@@ -11,7 +11,6 @@ public class Person : MonoBehaviour
     private Vector3 velocity;
     public Boolean isInfected { get; private set; }
     public Boolean isMasked { get; private set; }
-    public Material infectedMaterial;
     private Material normalMaterial;
     private Location destination;
 
@@ -75,9 +74,26 @@ public class Person : MonoBehaviour
 
     void setMaterial()
     {
-        if (this.isInfected)
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        MaterialCache materials = GameObject.FindObjectOfType<MaterialCache>();
+        
+        if (this.isInfected && this.isMasked)
         {
-            GetComponent<MeshRenderer>().material = this.infectedMaterial;
+            renderer.material = materials.characterInfectedAndMaskedMaterial;
+        }
+
+        else if (this.isInfected)
+        {
+            renderer.material = materials.characterInfectedMaterial;
+        }
+        
+        else if (this.isMasked)
+        {
+            renderer.material = materials.characterMaskedMaterial;
+        }
+        else
+        {
+            renderer.material = this.normalMaterial;
         }
     }
 }
