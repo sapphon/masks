@@ -48,7 +48,7 @@ public class Person : MonoBehaviour
         if (!this.isInfected)
         {
             this.isInfected = true;
-            setMaterial();
+            chooseMaterial();
 
         }
     }
@@ -56,7 +56,7 @@ public class Person : MonoBehaviour
     public void mask()
     {
         this.isMasked = true;
-        setMaterial();
+        chooseMaterial();
     }
 
     void Update()
@@ -72,7 +72,7 @@ public class Person : MonoBehaviour
         }
     }
 
-    void setMaterial()
+    void chooseMaterial()
     {
         MeshRenderer renderer = GetComponent<MeshRenderer>();
         MaterialCache materials = GameObject.FindObjectOfType<MaterialCache>();
