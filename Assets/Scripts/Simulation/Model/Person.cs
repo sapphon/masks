@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class Person : MonoBehaviour
 {
-    private Vector3 velocity;
     public Boolean isInfected { get; private set; }
     public Boolean isMasked { get; private set; }
     private Material normalMaterial;
@@ -49,7 +48,7 @@ public class Person : MonoBehaviour
         {
             this.isInfected = true;
             chooseMaterial();
-
+            this.gameObject.AddComponent<Sneezer>();
         }
     }
 
@@ -62,6 +61,13 @@ public class Person : MonoBehaviour
     void Update()
     {
         checkArrival();
+    }
+
+    void cough()
+    {
+        if (!isInfected) return;
+        
+        
     }
 
     void checkArrival()
