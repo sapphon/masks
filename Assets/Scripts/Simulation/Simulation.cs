@@ -7,8 +7,11 @@ public class Simulation : MonoBehaviour
 {
     private List<Person> people;
     private float infectionRadius;
+    private SimulationParameters simulationParameters;
+    
     void Start()
     {
+        simulationParameters = GameObject.FindObjectOfType<SimulationParameters>();
         infectionRadius = 3;
         people = new List<Person>(GameObject.FindObjectsOfType<Person>());
         infectPatientZero();
@@ -17,7 +20,10 @@ public class Simulation : MonoBehaviour
     
     void Update()
     {
-        infectPeopleBasedOnDistance();
+        if (simulationParameters.infectOthersWithinInfectionRadius)
+        {
+            infectPeopleBasedOnDistance();
+        }
     }
 
     void infectPeopleBasedOnDistance()

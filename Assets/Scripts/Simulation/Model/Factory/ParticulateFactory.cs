@@ -13,6 +13,6 @@ public class ParticulateFactory
 
     private static Vector3 findCenterGivenOriginDirectionAndLength(Vector3 origin, Quaternion direction, float length)
     {
-        return origin + (direction.eulerAngles.normalized * (length/2));
+        return origin + (direction.eulerAngles.normalized * (length/2)) - new Vector3(0,1.75f,0);
     }
 }

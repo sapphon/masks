@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InfectiousVolume : MonoBehaviour
+public class InfectiousVolume : ParameterDrivenBehavior
 {
     private Dictionary<GameObject, float> objectsEntered;
 
@@ -23,7 +23,7 @@ public class InfectiousVolume : MonoBehaviour
         if (exiter != null)
         {
             float timeSpentInArea = Time.timeSinceLevelLoad - this.objectsEntered[other.gameObject];
-            if (timeSpentInArea > .25 * (exiter.isMasked ? 1.33 : 1))
+            if (timeSpentInArea > this.simulationParameters.particulateInfectionTime * (exiter.isMasked ? 1.33 : 1))
             {
                 exiter.infect();
             }
