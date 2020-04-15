@@ -6,7 +6,7 @@ using UnityEngine.AI;
 using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
 
-public class Person : MonoBehaviour
+public class Person : MonoBehaviour, IMaskable
 {
     public Boolean isInfected { get; private set; }
     public Boolean isMasked { get; private set; }
@@ -48,7 +48,7 @@ public class Person : MonoBehaviour
         {
             this.isInfected = true;
             chooseMaterial();
-            this.gameObject.AddComponent<Sneezer>();
+            SneezerFactory.makeSneezer(this, this.gameObject);
         }
     }
 
@@ -61,13 +61,6 @@ public class Person : MonoBehaviour
     void Update()
     {
         checkArrival();
-    }
-
-    void cough()
-    {
-        if (!isInfected) return;
-        
-        
     }
 
     void checkArrival()

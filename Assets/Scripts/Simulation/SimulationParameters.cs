@@ -12,6 +12,8 @@ public class SimulationParameters : MonoBehaviour
     public float particulateLifetimeInAirMinimum { get; private set; }
     public float particulateLifetimeInAirMaximum { get; private set; }
     
+    public float maskedSneezeCloudSizePercent { get; private set; }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,5 +21,6 @@ public class SimulationParameters : MonoBehaviour
         infectOthersWithinInfectionRadius = false;
         particulateLifetimeInAirMinimum = 10;
         particulateLifetimeInAirMaximum = 25;
+        maskedSneezeCloudSizePercent = 0.25f;
     }
 }

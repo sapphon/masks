@@ -12,6 +12,8 @@ public class Sneezer : MonoBehaviour
 
     private float nextSneezeTime;
 
+    public IMaskable maskable { get; set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,7 +39,14 @@ public class Sneezer : MonoBehaviour
     void sneeze()
     {
         Transform thisTransform = this.gameObject.transform;
-        ParticulateFactory.makeParticulateCloud(thisTransform, getSneezeDirection());
+        if (this.maskable != null && this.maskable.isMasked)
+        {
+            ParticulateFactory.makeMaskedParticulateCloud(thisTransform, getSneezeDirection());
+        }
+        else
+        {
+            ParticulateFactory.makeParticulateCloud(thisTransform, getSneezeDirection());
+        }
     }
 
     void setTimeOfNextSneeze()
