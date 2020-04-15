@@ -6,7 +6,7 @@ public class ParameterDrivenBehavior : MonoBehaviour
 {
     protected SimulationParameters simulationParameters;
     
-    void Start()
+    internal virtual void Start()
     {
         populateSimulationParameterObject();
     }
