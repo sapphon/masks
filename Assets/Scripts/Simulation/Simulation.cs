@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
-public class Simulation : MonoBehaviour
+public class Simulation : MonoBehaviour, IObserver<INormalizedParameterChange>
 {
     private List<Person> people;
     private float infectionRadius;
@@ -11,13 +14,19 @@ public class Simulation : MonoBehaviour
     
     void Start()
     {
+        people = new List<Person>(GameObject.FindObjectsOfType<Person>());
         simulationParameters = GameObject.FindObjectOfType<SimulationParameters>();
         infectionRadius = 3;
-        people = new List<Person>(GameObject.FindObjectsOfType<Person>());
         infectPatientZero();
-        maskSomePeople();
+        adjustPopulationMasking(simulationParameters.percentOfPopulationMasked);
+        subscribeToObservables();
     }
-    
+
+    private void subscribeToObservables()
+    {
+        simulationParameters.Subscribe(this);
+    }
+
     void Update()
     {
         if (simulationParameters.infectOthersWithinInfectionRadius)
@@ -60,20 +69,66 @@ public class Simulation : MonoBehaviour
         people[new System.Random().Next(people.Count)].infect();
     }
 
-    private void maskSomePeople()
+    private void adjustPopulationMasking(float whatPercentNormalized)
     {
-        int numberToMask = people.Count / 3;
-        for (int i = 0; i < numberToMask; i++)
+        int numberOfMaskedToReach = Convert.ToInt32(Math.Round(people.Count  * whatPercentNormalized));
+        int numberAlreadyMasked = getMaskedPeople().Count();
+        if (numberAlreadyMasked == numberOfMaskedToReach) return;
+        else if (numberAlreadyMasked < numberOfMaskedToReach)
         {
-            Person toMask = people[new System.Random().Next(people.Count)];
-            if (toMask.isMasked)
-            {
-                i--;
-            }
-            else
-            {
-                toMask.mask();
-            }
+            maskPeople(numberOfMaskedToReach - numberAlreadyMasked);
         }
+        else
+        {
+            unmaskPeople(numberAlreadyMasked - numberOfMaskedToReach);
+        }
+    }
+
+    void maskPeople(int numberToMask)
+    {
+        HashSet<Person> initiallyUnmaskedPeople = getUnmaskedPeople();
+        System.Random random = new System.Random();
+        foreach(Person p in initiallyUnmaskedPeople.OrderBy(x => random.Next()).Take(numberToMask))
+        {
+            p.mask();
+        }
+    }
+    
+    void unmaskPeople(int numberToUnmask)
+    {
+        HashSet<Person> initiallyMaskedPeople = getMaskedPeople();
+        System.Random random = new System.Random();
+        foreach(Person p in initiallyMaskedPeople.OrderBy(x => random.Next()).Take(numberToUnmask))
+        {
+            p.unmask();
+        }
+    }
+
+    public HashSet<Person> getMaskedPeople()
+    {
+        return new HashSet<Person>(people.FindAll(delegate(Person person) { return person.isMasked; }));
+    }
+    
+    public HashSet<Person> getUnmaskedPeople()
+    {
+        return new HashSet<Person>(people.FindAll(delegate(Person person) { return !person.isMasked; }));
+    }
+
+    //IObserver<ISimulationParametersData> implementation
+    public void OnCompleted(){}
+
+    public void OnError(Exception error)
+    {}
+
+    public void OnNext(INormalizedParameterChange value)
+    {
+        switch (value.getParameterName())
+        {
+            case "populationMaskPercentage":
+                this.adjustPopulationMasking(value.getParameterValue());
+                break;
+        }
+        
+
     }
 }

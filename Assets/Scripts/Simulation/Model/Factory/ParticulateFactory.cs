@@ -19,7 +19,6 @@ public class ParticulateFactory
         GameObject resource = (GameObject)Resources.Load("Prefabs/Particulate");
         GameObject cloud = GameObject.Instantiate(resource, findCenterGivenOriginDirectionAndLength(origin.position, direction, resource.GetComponent<BoxCollider>().size.z * GameObject.FindObjectOfType<SimulationParameters>().maskedSneezeCloudSizePercent), direction);
         cloud.transform.localScale = new Vector3(cloud.transform.localScale.x, cloud.transform.localScale.y, GameObject.FindObjectOfType<SimulationParameters>().maskedSneezeCloudSizePercent);
-        Debug.Log("Local scale is now: " + cloud.transform.localScale);
         return cloud;
     }
 

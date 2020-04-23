@@ -58,6 +58,12 @@ public class Person : MonoBehaviour, IMaskable
         chooseMaterial();
     }
 
+    public void unmask()
+    {
+        this.isMasked = false;
+        chooseMaterial();
+    }
+
     void Update()
     {
         checkArrival();
