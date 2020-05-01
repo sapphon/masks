@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class InfectiousVolume : ParameterDrivenBehavior
 {
@@ -16,7 +17,7 @@ public class InfectiousVolume : ParameterDrivenBehavior
     internal override void Start()
     {
         base.Start();
-        this.timeToDie = Time.time + UnityEngine.Random.Range(this.simulationParameters.particulateLifetimeInAirMinimum, this.simulationParameters.particulateLifetimeInAirMaximum);
+        this.timeToDie = Time.time + this.simulationParameters.particulateLifetimeInAirAvg + Random.Range(-simulationParameters.particulateLifetimeInAirAvg*.2f, simulationParameters.particulateLifetimeInAirAvg*.2f);
     }
 
     void Update()

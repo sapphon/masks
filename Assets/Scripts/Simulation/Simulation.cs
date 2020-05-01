@@ -127,8 +127,11 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedParameterChange>
             case "populationMaskPercentage":
                 this.adjustPopulationMasking(value.getParameterValue());
                 break;
+            case "particulateLifetimeAvg":
+                break;
+            default:
+                break;
         }
-        
-
     }
+    //End IObserver implementation
 }

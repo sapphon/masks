@@ -9,8 +9,7 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
 
     public Boolean infectOthersWithinInfectionRadius { get; private set; }
 
-    public float particulateLifetimeInAirMinimum { get; private set; }
-    public float particulateLifetimeInAirMaximum { get; private set; }
+    public float particulateLifetimeInAirAvg { get; private set; }
 
     public float maskedSneezeCloudSizePercent { get; private set; }
 
@@ -38,8 +37,7 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
     {
         particulateInfectionTime = 0.2f;
         infectOthersWithinInfectionRadius = false;
-        particulateLifetimeInAirMinimum = 10;
-        particulateLifetimeInAirMaximum = 25;
+        particulateLifetimeInAirAvg = 20f;
         maskedSneezeCloudSizePercent = 0.25f;
         percentOfPopulationMasked = 0.2f;
         parameterObservers = new List<IObserver<INormalizedParameterChange>>();
@@ -50,16 +48,22 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
         if (key == "populationMaskPercentage")
         {
             this.percentOfPopulationMasked = value;
-            notifyPopulationMaskPercentageChanged(this.percentOfPopulationMasked);
+            notifyObserversStatisticChanged(new NormalizedParameter("populationMaskPercentage",this.percentOfPopulationMasked));
+            return true;
+        }
+        else if (key == "particulateLifetimeAvg")
+        {
+            this.particulateLifetimeInAirAvg = 50f * value;
+            notifyObserversStatisticChanged(new NormalizedParameter("particulateLifetimeAvg",this.particulateLifetimeInAirAvg));
             return true;
         }
 
         return false;
     }
 
-    private void notifyPopulationMaskPercentageChanged(float newValue)
+    private void notifyObserversStatisticChanged(NormalizedParameter toNotifyOf)
     {
-        parameterObservers.ForEach(obs => obs.OnNext(new NormalizedParameter("populationMaskPercentage", newValue)));
+        parameterObservers.ForEach(obs => obs.OnNext(toNotifyOf));
     }
 
     public IDisposable Subscribe(IObserver<INormalizedParameterChange> observer)
