@@ -14,4 +14,9 @@ public class FloatingPointComparer
     {
         return one >= 0f && one <= 1f;
     }
+
+    public static Boolean isBetweenInclusive(float presumedBefore, float value, float presumedAfter)
+    {
+        return presumedBefore <= value  && value <= presumedAfter;
+    }
 }

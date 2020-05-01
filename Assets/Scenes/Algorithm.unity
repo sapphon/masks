@@ -1382,7 +1382,7 @@ PrefabInstance:
     - target: {fileID: 3664687484147766977, guid: f74326feb0f8a9148a4c8bb9c03b4097,
         type: 3}
       propertyPath: parameterRepresented
-      value: particulateLifetimeAvg
+      value: infectionLatencyTime
       objectReference: {fileID: 0}
     - target: {fileID: 3848901452905036636, guid: f74326feb0f8a9148a4c8bb9c03b4097,
         type: 3}
@@ -2390,7 +2390,7 @@ PrefabInstance:
     - target: {fileID: 3664687484147766977, guid: f74326feb0f8a9148a4c8bb9c03b4097,
         type: 3}
       propertyPath: parameterRepresented
-      value: particulateLifetimeAvg
+      value: infectionContagionTime
       objectReference: {fileID: 0}
     - target: {fileID: 3848901452905036636, guid: f74326feb0f8a9148a4c8bb9c03b4097,
         type: 3}

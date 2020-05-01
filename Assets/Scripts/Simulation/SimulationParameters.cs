@@ -12,6 +12,10 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
     public float particulateLifetimeInAirAvg { get; private set; }
 
     public float maskedSneezeCloudSizePercent { get; private set; }
+    
+    public float infectionLatencyTime { get; private set; }
+    
+    public float infectionContagionTime { get; private set; }
 
     private float _percentPopulationMasked;
     private List<IObserver<INormalizedParameterChange>> parameterObservers;
@@ -40,6 +44,8 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
         particulateLifetimeInAirAvg = 20f;
         maskedSneezeCloudSizePercent = 0.25f;
         percentOfPopulationMasked = 0.2f;
+        infectionContagionTime = 20f;
+        infectionLatencyTime = 5f;
         parameterObservers = new List<IObserver<INormalizedParameterChange>>();
     }
 
@@ -55,6 +61,18 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
         {
             this.particulateLifetimeInAirAvg = 50f * value;
             notifyObserversStatisticChanged(new NormalizedParameter("particulateLifetimeAvg",this.particulateLifetimeInAirAvg));
+            return true;
+        }
+        else if (key == "infectionContagionTime")
+        {
+            this.infectionContagionTime = 50f * value;
+            notifyObserversStatisticChanged(new NormalizedParameter("infectionContagionTime",this.infectionContagionTime));
+            return true;
+        }
+        else if (key == "infectionLatencyTime")
+        {
+            this.infectionLatencyTime = 50f * value;
+            notifyObserversStatisticChanged(new NormalizedParameter("infectionLatencyTime",this.infectionLatencyTime));
             return true;
         }
 

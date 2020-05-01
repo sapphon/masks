@@ -6,15 +6,17 @@ using UnityEngine.AI;
 using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
 
-public class Person : MonoBehaviour, IMaskable
+public class Person : ParameterDrivenBehavior, IMaskable
 {
     public Boolean isInfected { get; private set; }
+    private float timeOfInfection { get; set; }
     public Boolean isMasked { get; private set; }
     private Material normalMaterial;
     private Location destination;
 
     void Start()
     {
+        base.Start();
         chooseDestinationAndSpeed();
         saveNormalMaterial();
     }
@@ -47,9 +49,14 @@ public class Person : MonoBehaviour, IMaskable
         if (!this.isInfected)
         {
             this.isInfected = true;
+            timeOfInfection = Time.time;
             chooseMaterial();
-            SneezerFactory.makeSneezer(this, this.gameObject);
         }
+    }
+
+    protected virtual void becomeContagious()
+    {
+        SneezerFactory.makeSneezer(this, this.gameObject);
     }
 
     public void mask()
@@ -67,38 +74,61 @@ public class Person : MonoBehaviour, IMaskable
     void Update()
     {
         checkArrival();
+        checkContagion();
     }
 
-    void checkArrival()
+    void checkContagion()
     {
-        if (Vector3.Distance(this.transform.position, destination.transform.position) < 2)
+        if (this.isInfected)
         {
-            chooseDestinationAndSpeed();
+            if (FloatingPointComparer.isBetweenInclusive(
+                this.timeOfInfection + this.simulationParameters.infectionLatencyTime, Time.time,
+                this.timeOfInfection + simulationParameters.infectionContagionTime +
+                simulationParameters.infectionLatencyTime))
+            {
+                if (this.GetComponent<Sneezer>() == null)
+                {
+                    this.becomeContagious();
+                }
+            }
+            else if (timeOfInfection + simulationParameters.infectionContagionTime + simulationParameters.infectionLatencyTime < Time.time)
+            {
+                this.isInfected = false;
+                chooseMaterial();
+            }
+        }
+        }
+
+        void checkArrival()
+        {
+            if (Vector3.Distance(this.transform.position, destination.transform.position) < 2)
+            {
+                chooseDestinationAndSpeed();
+            }
+        }
+
+        void chooseMaterial()
+        {
+            MeshRenderer renderer = GetComponent<MeshRenderer>();
+            MaterialCache materials = GameObject.FindObjectOfType<MaterialCache>();
+
+            if (this.isInfected && this.isMasked)
+            {
+                renderer.material = materials.characterInfectedAndMaskedMaterial;
+            }
+
+            else if (this.isInfected)
+            {
+                renderer.material = materials.characterInfectedMaterial;
+            }
+
+            else if (this.isMasked)
+            {
+                renderer.material = materials.characterMaskedMaterial;
+            }
+            else
+            {
+                renderer.material = this.normalMaterial;
+            }
         }
     }
-
-    void chooseMaterial()
-    {
-        MeshRenderer renderer = GetComponent<MeshRenderer>();
-        MaterialCache materials = GameObject.FindObjectOfType<MaterialCache>();
-        
-        if (this.isInfected && this.isMasked)
-        {
-            renderer.material = materials.characterInfectedAndMaskedMaterial;
-        }
-
-        else if (this.isInfected)
-        {
-            renderer.material = materials.characterInfectedMaterial;
-        }
-        
-        else if (this.isMasked)
-        {
-            renderer.material = materials.characterMaskedMaterial;
-        }
-        else
-        {
-            renderer.material = this.normalMaterial;
-        }
-    }
-}
