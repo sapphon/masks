@@ -30,6 +30,7 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedParameterChange>
                 break;
         }
     }
+    //End IObserver implementation
 
     private void Start()
     {
@@ -113,6 +114,4 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedParameterChange>
     {
         return new HashSet<Person>(people.FindAll(delegate(Person person) { return !person.isMasked; }));
     }
-
-    //End IObserver implementation
 }
