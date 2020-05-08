@@ -1,43 +1,43 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParameterChange>
 {
+    private float _percentPopulationMasked;
+    private List<IObserver<INormalizedParameterChange>> parameterObservers;
     public float particulateInfectionTime { get; private set; }
 
-    public Boolean infectOthersWithinInfectionRadius { get; private set; }
+    public bool infectOthersWithinInfectionRadius { get; private set; }
 
     public float particulateLifetimeInAirAvg { get; private set; }
 
     public float maskedSneezeCloudSizePercent { get; private set; }
-    
-    public float infectionLatencyTime { get; private set; }
-    
-    public float infectionContagionTime { get; private set; }
 
-    private float _percentPopulationMasked;
-    private List<IObserver<INormalizedParameterChange>> parameterObservers;
+    public float infectionLatencyTime { get; private set; }
+
+    public float infectionContagionTime { get; private set; }
 
     public float percentOfPopulationMasked
     {
         get => _percentPopulationMasked;
         private set
         {
-            if (!FloatingPointComparer.isInNormalizedRange(value) || FloatingPointComparer.isCloseEnough(value, _percentPopulationMasked))
-            {
+            if (!FloatingPointComparer.isInNormalizedRange(value) ||
+                FloatingPointComparer.isCloseEnough(value, _percentPopulationMasked))
                 return;
-            }
-            else
-            {
-                _percentPopulationMasked = value;
-            }
+            _percentPopulationMasked = value;
         }
     }
 
+    public IDisposable Subscribe(IObserver<INormalizedParameterChange> observer)
+    {
+        parameterObservers.Add(observer);
+        return null;
+    }
+
     // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         particulateInfectionTime = 0.2f;
         infectOthersWithinInfectionRadius = false;
@@ -49,30 +49,35 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
         parameterObservers = new List<IObserver<INormalizedParameterChange>>();
     }
 
-    public bool alterParameter(String key, float value)
+    public bool alterParameter(string key, float value)
     {
         if (key == "populationMaskPercentage")
         {
-            this.percentOfPopulationMasked = value;
-            notifyObserversStatisticChanged(new NormalizedParameter("populationMaskPercentage",this.percentOfPopulationMasked));
+            percentOfPopulationMasked = value;
+            notifyObserversStatisticChanged(new NormalizedParameter("populationMaskPercentage",
+                percentOfPopulationMasked));
             return true;
         }
-        else if (key == "particulateLifetimeAvg")
+
+        if (key == "particulateLifetimeAvg")
         {
-            this.particulateLifetimeInAirAvg = 50f * value;
-            notifyObserversStatisticChanged(new NormalizedParameter("particulateLifetimeAvg",this.particulateLifetimeInAirAvg));
+            particulateLifetimeInAirAvg = 50f * value;
+            notifyObserversStatisticChanged(new NormalizedParameter("particulateLifetimeAvg",
+                particulateLifetimeInAirAvg));
             return true;
         }
-        else if (key == "infectionContagionTime")
+
+        if (key == "infectionContagionTime")
         {
-            this.infectionContagionTime = 50f * value;
-            notifyObserversStatisticChanged(new NormalizedParameter("infectionContagionTime",this.infectionContagionTime));
+            infectionContagionTime = 50f * value;
+            notifyObserversStatisticChanged(new NormalizedParameter("infectionContagionTime", infectionContagionTime));
             return true;
         }
-        else if (key == "infectionLatencyTime")
+
+        if (key == "infectionLatencyTime")
         {
-            this.infectionLatencyTime = 50f * value;
-            notifyObserversStatisticChanged(new NormalizedParameter("infectionLatencyTime",this.infectionLatencyTime));
+            infectionLatencyTime = 50f * value;
+            notifyObserversStatisticChanged(new NormalizedParameter("infectionLatencyTime", infectionLatencyTime));
             return true;
         }
 
@@ -82,11 +87,5 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
     private void notifyObserversStatisticChanged(NormalizedParameter toNotifyOf)
     {
         parameterObservers.ForEach(obs => obs.OnNext(toNotifyOf));
-    }
-
-    public IDisposable Subscribe(IObserver<INormalizedParameterChange> observer)
-    {
-        this.parameterObservers.Add(observer);
-        return null;
     }
 }

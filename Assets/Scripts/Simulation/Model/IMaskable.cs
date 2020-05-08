@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface IMaskable 
+﻿public interface IMaskable
 {
-    Boolean isMasked { get; }
+    bool isMasked { get; }
     void mask();
 }

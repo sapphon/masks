@@ -1,16 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Location : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
-        
     }
-    
-    void Update()
+
+    private void Update()
     {
-        
     }
 }

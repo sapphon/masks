@@ -1,90 +1,93 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using System.Collections;
-
 #if UNITY_EDITOR
-using UnityEditor;
+
 #endif
 
 [RequireComponent(typeof(RectTransform))]
-public class MSACCJoystick : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
+public class MSACCJoystick : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+{
+    private Vector2 _axis;
+    private bool _isDragging;
 
-	public RectTransform _joystickGraphic; 
-	Vector2 _axis;
-	bool _isDragging;
-	[HideInInspector]
-	public float joystickY;
-	[HideInInspector]
-	public float joystickX;
+    public RectTransform _joystickGraphic;
 
-	RectTransform _rectTransform;
-	public RectTransform rectTransform {
-		get {
-			if (!_rectTransform) {
-				_rectTransform = transform as RectTransform;
-			}
-			return _rectTransform;
-		}
-	}
+    private RectTransform _rectTransform;
 
-	public void OnBeginDrag(PointerEventData eventData) {
-		if (!IsActive ()) {
-			return;
-		}
-		EventSystem.current.SetSelectedGameObject(gameObject, eventData);
-		Vector2 newAxis = transform.InverseTransformPoint(eventData.position);
-		newAxis.x /= rectTransform.sizeDelta.x * 0.5f;
-		newAxis.y /= rectTransform.sizeDelta.y * 0.5f;
-		SetAxisMS(newAxis);
-		_isDragging = true;
-	}
+    [HideInInspector] public float joystickX;
 
-	public void OnEndDrag(PointerEventData eventData) {
-		_isDragging = false;
-	}
+    [HideInInspector] public float joystickY;
 
-	public void OnDrag(PointerEventData eventData) {
-		RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out _axis);
-		_axis.x /= rectTransform.sizeDelta.x * 0.5f;
-		_axis.y /= rectTransform.sizeDelta.y * 0.5f;
-		SetAxisMS(_axis);
-	}
+    public RectTransform rectTransform
+    {
+        get
+        {
+            if (!_rectTransform) _rectTransform = transform as RectTransform;
+            return _rectTransform;
+        }
+    }
 
-	void OnDeselect() {
-		_isDragging = false;
-	}
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (!IsActive()) return;
+        EventSystem.current.SetSelectedGameObject(gameObject, eventData);
+        Vector2 newAxis = transform.InverseTransformPoint(eventData.position);
+        newAxis.x /= rectTransform.sizeDelta.x * 0.5f;
+        newAxis.y /= rectTransform.sizeDelta.y * 0.5f;
+        SetAxisMS(newAxis);
+        _isDragging = true;
+    }
 
-	void LateUpdate() {
-		if (!_isDragging) {
-			if (_axis != Vector2.zero) {
-				Vector2 newAxis = _axis - (_axis * Time.deltaTime * 25.0f);
-				if (newAxis.sqrMagnitude <= 0.1f) {
-					newAxis = Vector2.zero;
-				}
-				SetAxisMS (newAxis);
-			}
-		}
-	}
+    public void OnDrag(PointerEventData eventData)
+    {
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, eventData.position,
+            eventData.pressEventCamera, out _axis);
+        _axis.x /= rectTransform.sizeDelta.x * 0.5f;
+        _axis.y /= rectTransform.sizeDelta.y * 0.5f;
+        SetAxisMS(_axis);
+    }
 
-	public void SetAxisMS(Vector2 axis) {
-		_axis = Vector2.ClampMagnitude(axis, 1);
-		UpdateJoystickGraphicMS();
-		joystickY = _axis.y;
-		joystickX = _axis.x;
-	}
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        _isDragging = false;
+    }
 
-	void UpdateJoystickGraphicMS() {
-		if (_joystickGraphic) {
-			_joystickGraphic.localPosition = _axis * Mathf.Max (rectTransform.sizeDelta.x, rectTransform.sizeDelta.y) * 0.5f;
-		}
-	}
+    private void OnDeselect()
+    {
+        _isDragging = false;
+    }
 
-	#if UNITY_EDITOR
-	protected override void OnValidate() {
-		base.OnValidate();
-		UpdateJoystickGraphicMS();
-	}
-	#endif
+    private void LateUpdate()
+    {
+        if (!_isDragging)
+            if (_axis != Vector2.zero)
+            {
+                var newAxis = _axis - _axis * Time.deltaTime * 25.0f;
+                if (newAxis.sqrMagnitude <= 0.1f) newAxis = Vector2.zero;
+                SetAxisMS(newAxis);
+            }
+    }
+
+    public void SetAxisMS(Vector2 axis)
+    {
+        _axis = Vector2.ClampMagnitude(axis, 1);
+        UpdateJoystickGraphicMS();
+        joystickY = _axis.y;
+        joystickX = _axis.x;
+    }
+
+    private void UpdateJoystickGraphicMS()
+    {
+        if (_joystickGraphic)
+            _joystickGraphic.localPosition =
+                _axis * Mathf.Max(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y) * 0.5f;
+    }
+
+#if UNITY_EDITOR
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        UpdateJoystickGraphicMS();
+    }
+#endif
 }

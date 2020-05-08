@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ParameterDrivenBehavior : MonoBehaviour
 {
     protected SimulationParameters simulationParameters;
-    
+
     internal virtual void Start()
     {
         populateSimulationParameterObject();
@@ -13,6 +11,6 @@ public class ParameterDrivenBehavior : MonoBehaviour
 
     private void populateSimulationParameterObject()
     {
-        this.simulationParameters = GameObject.FindObjectOfType<SimulationParameters>();
+        simulationParameters = FindObjectOfType<SimulationParameters>();
     }
 }

@@ -1,33 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Random = System.Random;
+﻿using UnityEngine;
 
 public class Sneezer : MonoBehaviour
 {
-
-    private float rateOfSneezeMinimum;
+    private float nextSneezeTime;
 
     private float rateOfSneezeMaximum;
 
-    private float nextSneezeTime;
+    private float rateOfSneezeMinimum;
 
     public IMaskable maskable { get; set; }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        this.rateOfSneezeMaximum = 25;
-        this.rateOfSneezeMinimum = 5;
+        rateOfSneezeMaximum = 25;
+        rateOfSneezeMinimum = 5;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         checkSneeze();
     }
 
-    void checkSneeze()
+    private void checkSneeze()
     {
         if (Time.time > nextSneezeTime)
         {
@@ -36,27 +32,23 @@ public class Sneezer : MonoBehaviour
         }
     }
 
-    void sneeze()
+    private void sneeze()
     {
-        Transform thisTransform = this.gameObject.transform;
-        if (this.maskable != null && this.maskable.isMasked)
-        {
+        var thisTransform = gameObject.transform;
+        if (maskable != null && maskable.isMasked)
             ParticulateFactory.makeMaskedParticulateCloud(thisTransform, getSneezeDirection());
-        }
         else
-        {
             ParticulateFactory.makeParticulateCloud(thisTransform, getSneezeDirection());
-        }
     }
 
-    void setTimeOfNextSneeze()
+    private void setTimeOfNextSneeze()
     {
-        nextSneezeTime += UnityEngine.Random.Range(rateOfSneezeMinimum, rateOfSneezeMaximum);
+        nextSneezeTime += Random.Range(rateOfSneezeMinimum, rateOfSneezeMaximum);
     }
 
-    Quaternion getSneezeDirection()
+    private Quaternion getSneezeDirection()
     {
-        float angle = UnityEngine.Random.Range(-135f, 135f);
-        return Quaternion.AngleAxis(angle, this.gameObject.transform.up);
+        var angle = Random.Range(-135f, 135f);
+        return Quaternion.AngleAxis(angle, gameObject.transform.up);
     }
 }

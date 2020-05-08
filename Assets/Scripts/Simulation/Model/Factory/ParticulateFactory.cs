@@ -1,30 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SceneManagement;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ParticulateFactory
 {
     public static GameObject makeParticulateCloud(Transform origin, Quaternion direction)
     {
-        GameObject resource = Resources.Load("Prefabs/Particulate") as GameObject;
-        GameObject cloud = GameObject.Instantiate(resource,
+        var resource = Resources.Load("Prefabs/Particulate") as GameObject;
+        var cloud = Object.Instantiate(resource,
             findCenterGivenOriginDirectionAndLength(origin.position, direction,
                 resource.GetComponent<BoxCollider>().size.z), direction);
         return cloud;
     }
-    
+
     public static GameObject makeMaskedParticulateCloud(Transform origin, Quaternion direction)
     {
-        GameObject resource = (GameObject)Resources.Load("Prefabs/Particulate");
-        GameObject cloud = GameObject.Instantiate(resource, findCenterGivenOriginDirectionAndLength(origin.position, direction, resource.GetComponent<BoxCollider>().size.z * GameObject.FindObjectOfType<SimulationParameters>().maskedSneezeCloudSizePercent), direction);
-        cloud.transform.localScale = new Vector3(cloud.transform.localScale.x, cloud.transform.localScale.y, GameObject.FindObjectOfType<SimulationParameters>().maskedSneezeCloudSizePercent);
+        var resource = (GameObject) Resources.Load("Prefabs/Particulate");
+        var cloud = Object.Instantiate(resource,
+            findCenterGivenOriginDirectionAndLength(origin.position, direction,
+                resource.GetComponent<BoxCollider>().size.z *
+                Object.FindObjectOfType<SimulationParameters>().maskedSneezeCloudSizePercent), direction);
+        cloud.transform.localScale = new Vector3(cloud.transform.localScale.x, cloud.transform.localScale.y,
+            Object.FindObjectOfType<SimulationParameters>().maskedSneezeCloudSizePercent);
         return cloud;
     }
 
     private static Vector3 findCenterGivenOriginDirectionAndLength(Vector3 origin, Quaternion direction, float length)
     {
-        Vector3 aimpoint =  origin + (direction.eulerAngles.normalized * (length / 2));
+        var aimpoint = origin + direction.eulerAngles.normalized * (length / 2);
         return new Vector3(aimpoint.x, 1, aimpoint.z);
     }
 }

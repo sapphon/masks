@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class FloatingPointComparer
 {
-    public static Boolean isCloseEnough(float one, float two, float delta = float.Epsilon * 2)
+    public static bool isCloseEnough(float one, float two, float delta = float.Epsilon * 2)
     {
         return Math.Abs(one - two) < delta;
     }
 
-    public static Boolean isInNormalizedRange(float one)
+    public static bool isInNormalizedRange(float one)
     {
         return one >= 0f && one <= 1f;
     }
 
-    public static Boolean isBetweenInclusive(float presumedBefore, float value, float presumedAfter)
+    public static bool isBetweenInclusive(float presumedBefore, float value, float presumedAfter)
     {
-        return presumedBefore <= value  && value <= presumedAfter;
+        return presumedBefore <= value && value <= presumedAfter;
     }
 }

@@ -1,7 +1,7 @@
 ﻿public class NormalizedParameter : INormalizedParameterChange
 {
-    private string name;
-    private float value;
+    private readonly string name;
+    private readonly float value;
 
     public NormalizedParameter(string name, float value)
     {
@@ -11,11 +11,11 @@
 
     public string getParameterName()
     {
-        return this.name;
+        return name;
     }
 
     public float getParameterValue()
     {
-        return this.value;
+        return value;
     }
 }

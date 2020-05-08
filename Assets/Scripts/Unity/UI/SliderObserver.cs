@@ -1,23 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class SliderObserver : MonoBehaviour
 {
     public string parameterRepresented;
-    protected Slider slider;
     protected SimulationParameters simulationParameters;
+    protected Slider slider;
 
-    
-    void Start()
+
+    private void Start()
     {
-        slider = this.gameObject.GetComponent<Slider>();
-        simulationParameters = GameObject.FindObjectOfType<SimulationParameters>();
+        slider = gameObject.GetComponent<Slider>();
+        simulationParameters = FindObjectOfType<SimulationParameters>();
         setInitialValueFromParameters();
         registerObserver();
-        
     }
 
     protected virtual bool floatValueChanged()
@@ -27,11 +23,11 @@ public class SliderObserver : MonoBehaviour
 
     protected virtual void setInitialValueFromParameters()
     {
-        this.slider.value = this.simulationParameters.percentOfPopulationMasked;
+        slider.value = simulationParameters.percentOfPopulationMasked;
     }
 
     protected virtual void registerObserver()
     {
-        slider.onValueChanged.AddListener(delegate { this.floatValueChanged();});
+        slider.onValueChanged.AddListener(delegate { floatValueChanged(); });
     }
 }
