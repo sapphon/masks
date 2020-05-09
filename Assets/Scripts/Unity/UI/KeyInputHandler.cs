@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KeyInputHandler : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class KeyInputHandler : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             this.quit();
+        }
+        else if (Input.GetKeyUp(KeyCode.Backspace))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
     
