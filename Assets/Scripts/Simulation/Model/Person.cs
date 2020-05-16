@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class Person : ParameterDrivenBehavior, IMaskable
+public class Person : ParameterDrivenBehavior, IMaskable, IInfectable
 {
     private Location destination;
     private Material normalMaterial;

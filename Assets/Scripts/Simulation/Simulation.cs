@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = System.Random;
 
-public class Simulation : MonoBehaviour, IObserver<INormalizedParameterChange>
+public class Simulation : MonoBehaviour, IObserver<INormalizedValueChange>, IObservable<INormalizedValueChange>
 {
     private float infectionRadius;
     private List<Person> people;
     private SimulationParameters simulationParameters;
+    private List<IObserver<INormalizedValueChange>> simulationObservers;
 
-    //IObserver<ISimulationParametersData> implementation
+    //IObserver<INormalizedValueChange> implementation
     public void OnCompleted()
     {
     }
@@ -19,7 +21,7 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedParameterChange>
     {
     }
 
-    public void OnNext(INormalizedParameterChange value)
+    public void OnNext(INormalizedValueChange value)
     {
         switch (value.getParameterName())
         {
@@ -31,6 +33,18 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedParameterChange>
         }
     }
     //End IObserver implementation
+    //IObservable<INormalizedValueChange> implementation
+    public IDisposable Subscribe(IObserver<INormalizedValueChange> observer)
+    {
+        this.simulationObservers.Add(observer);
+        return null;
+    }
+    //End IObservable implementation
+
+    void Awake()
+    {
+        simulationObservers = new List<IObserver<INormalizedValueChange>>();
+    }
 
     private void Start()
     {
@@ -113,5 +127,32 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedParameterChange>
     public HashSet<Person> getUnmaskedPeople()
     {
         return new HashSet<Person>(people.FindAll(delegate(Person person) { return !person.isMasked; }));
+    }
+
+    public HashSet<Person> getInfectedPeople()
+    {
+        return new HashSet<Person>(people.FindAll(delegate(Person person) { return person.isInfected; }));
+    }
+
+    public HashSet<Person> getUninfectedPeople()
+    {
+        return new HashSet<Person>(people.FindAll(delegate(Person person) { return !person.isInfected; }));
+    }
+
+    public string getValue(string valueName)
+    {
+        switch (valueName)
+        {
+            case "populationInfectedCount":
+                return this.getInfectedPeople().Count.ToString();
+                break;
+            case "populationUninfectedCount":
+                return this.getUninfectedPeople().Count.ToString();
+                break;
+            case "timeElapsed":
+                return Time.timeSinceLevelLoad.ToString("N2");
+            default:
+                return "oopsie";
+        }
     }
 }

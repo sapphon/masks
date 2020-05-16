@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParameterChange>
+public class SimulationParameters : MonoBehaviour, IObservable<INormalizedValueChange>
 {
     private float _percentPopulationMasked;
-    private List<IObserver<INormalizedParameterChange>> parameterObservers;
+    private List<IObserver<INormalizedValueChange>> parameterObservers;
     public float particulateInfectionTime { get; private set; }
 
     public bool infectOthersWithinInfectionRadius { get; private set; }
@@ -30,7 +30,7 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
         }
     }
 
-    public IDisposable Subscribe(IObserver<INormalizedParameterChange> observer)
+    public IDisposable Subscribe(IObserver<INormalizedValueChange> observer)
     {
         parameterObservers.Add(observer);
         return null;
@@ -46,7 +46,7 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
         percentOfPopulationMasked = 0.2f;
         infectionContagionTime = 20f;
         infectionLatencyTime = 5f;
-        parameterObservers = new List<IObserver<INormalizedParameterChange>>();
+        parameterObservers = new List<IObserver<INormalizedValueChange>>();
     }
 
     public bool alterParameter(string key, float value)
@@ -54,7 +54,7 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
         if (key == "populationMaskPercentage")
         {
             percentOfPopulationMasked = value;
-            notifyObserversStatisticChanged(new NormalizedParameter("populationMaskPercentage",
+            notifyObserversStatisticChanged(new NormalizedValue("populationMaskPercentage",
                 percentOfPopulationMasked));
             return true;
         }
@@ -62,7 +62,7 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
         if (key == "particulateLifetimeAvg")
         {
             particulateLifetimeInAirAvg = 50f * value;
-            notifyObserversStatisticChanged(new NormalizedParameter("particulateLifetimeAvg",
+            notifyObserversStatisticChanged(new NormalizedValue("particulateLifetimeAvg",
                 particulateLifetimeInAirAvg));
             return true;
         }
@@ -70,21 +70,21 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedParame
         if (key == "infectionContagionTime")
         {
             infectionContagionTime = 50f * value;
-            notifyObserversStatisticChanged(new NormalizedParameter("infectionContagionTime", infectionContagionTime));
+            notifyObserversStatisticChanged(new NormalizedValue("infectionContagionTime", infectionContagionTime));
             return true;
         }
 
         if (key == "infectionLatencyTime")
         {
             infectionLatencyTime = 50f * value;
-            notifyObserversStatisticChanged(new NormalizedParameter("infectionLatencyTime", infectionLatencyTime));
+            notifyObserversStatisticChanged(new NormalizedValue("infectionLatencyTime", infectionLatencyTime));
             return true;
         }
 
         return false;
     }
 
-    private void notifyObserversStatisticChanged(NormalizedParameter toNotifyOf)
+    private void notifyObserversStatisticChanged(NormalizedValue toNotifyOf)
     {
         parameterObservers.ForEach(obs => obs.OnNext(toNotifyOf));
     }
