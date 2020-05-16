@@ -4,14 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class KeyInputHandler : MonoBehaviour
 {
-    private MSCameraController cameraControls;
-
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        this.cameraControls = GameObject.FindObjectOfType<MSCameraController>();
-    }
-
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.Escape))
@@ -24,21 +16,7 @@ public class KeyInputHandler : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.LeftAlt))
         {
-            this.toggleCursor();
-        }
-    }
-
-    void toggleCursor()
-    {
-        if (Cursor.lockState == CursorLockMode.Locked)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            this.cameraControls.enabled = false;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            this.cameraControls.enabled = true;
+            GameObject.FindObjectOfType<CursorHandler>().toggleCameraAndCursorMode();
         }
     }
 
