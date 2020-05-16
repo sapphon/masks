@@ -14,7 +14,7 @@ public class KeyInputHandler : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        else if (Input.GetKeyUp(KeyCode.LeftAlt))
+        else if (Input.GetKeyUp(KeyCode.C))
         {
             GameObject.FindObjectOfType<CursorHandler>().toggleCameraAndCursorMode();
         }
