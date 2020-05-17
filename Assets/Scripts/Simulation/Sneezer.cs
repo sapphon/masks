@@ -4,16 +4,17 @@ public class Sneezer : MonoBehaviour
 {
     private float nextSneezeTime;
 
-    private float rateOfSneezeMaximum;
 
     private float rateOfSneezeMinimum;
 
     public IMaskable maskable { get; set; }
 
+    private SimulationParameters simulationParameters;
+
     // Start is called before the first frame update
     private void Start()
     {
-        rateOfSneezeMaximum = 25;
+        simulationParameters = GameObject.FindObjectOfType<SimulationParameters>();
         rateOfSneezeMinimum = 5;
     }
 
@@ -43,7 +44,7 @@ public class Sneezer : MonoBehaviour
 
     private void setTimeOfNextSneeze()
     {
-        nextSneezeTime += Random.Range(rateOfSneezeMinimum, rateOfSneezeMaximum);
+        nextSneezeTime += Random.Range(rateOfSneezeMinimum, simulationParameters.particulateGenerationDelayAvg + rateOfSneezeMinimum);
     }
 
     private Quaternion getSneezeDirection()

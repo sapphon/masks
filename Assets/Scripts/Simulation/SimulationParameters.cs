@@ -19,6 +19,8 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedValueC
     public float infectionContagionTime { get; private set; }
     
     public float personWalkSpeedAvg { get; private set; }
+    
+    public float particulateGenerationDelayAvg { get; private set; }
 
     public float percentOfPopulationMasked
     {
@@ -49,6 +51,7 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedValueC
         infectionContagionTime = 20f;
         infectionLatencyTime = 5f;
         personWalkSpeedAvg = 7.5f;
+        particulateGenerationDelayAvg = 15f;
         parameterObservers = new List<IObserver<INormalizedValueChange>>();
     }
 
@@ -66,6 +69,14 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedValueC
             particulateLifetimeInAirAvg = 50f * value;
             notifyObserversStatisticChanged(new NormalizedValue("particulateLifetimeAvg",
                 particulateLifetimeInAirAvg));
+            return true;
+        }
+        
+        else if (key == "particulateGenerationDelayAvg")
+        {
+            particulateGenerationDelayAvg = 20f * value;
+            notifyObserversStatisticChanged(new NormalizedValue("particulateGenerationDelayAvg",
+                particulateGenerationDelayAvg));
             return true;
         }
 
