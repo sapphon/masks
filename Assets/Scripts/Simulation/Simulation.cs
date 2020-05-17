@@ -30,6 +30,9 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedValueChange>, IObs
                 break;
             case "particulateLifetimeAvg":
                 break;
+            case "personWalkSpeedAvg":
+                adjustPopulationWalkSpeed(value.getParameterValue());
+                break;
         }
     }
     //End IObserver implementation
@@ -103,6 +106,14 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedValueChange>, IObs
             maskPeople(numberOfMaskedToReach - numberAlreadyMasked);
         else
             unmaskPeople(numberAlreadyMasked - numberOfMaskedToReach);
+    }
+    
+    private void adjustPopulationWalkSpeed(float whatSpeed)
+    {
+        people.ForEach(person =>
+        {
+            person.chooseWalkSpeed(whatSpeed);
+        });
     }
 
     private void maskPeople(int numberToMask)

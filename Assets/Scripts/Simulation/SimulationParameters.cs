@@ -17,6 +17,8 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedValueC
     public float infectionLatencyTime { get; private set; }
 
     public float infectionContagionTime { get; private set; }
+    
+    public float personWalkSpeedAvg { get; private set; }
 
     public float percentOfPopulationMasked
     {
@@ -46,6 +48,7 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedValueC
         percentOfPopulationMasked = 0.2f;
         infectionContagionTime = 20f;
         infectionLatencyTime = 5f;
+        personWalkSpeedAvg = 7.5f;
         parameterObservers = new List<IObserver<INormalizedValueChange>>();
     }
 
@@ -58,8 +61,7 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedValueC
                 percentOfPopulationMasked));
             return true;
         }
-
-        if (key == "particulateLifetimeAvg")
+        else if (key == "particulateLifetimeAvg")
         {
             particulateLifetimeInAirAvg = 50f * value;
             notifyObserversStatisticChanged(new NormalizedValue("particulateLifetimeAvg",
@@ -67,20 +69,25 @@ public class SimulationParameters : MonoBehaviour, IObservable<INormalizedValueC
             return true;
         }
 
-        if (key == "infectionContagionTime")
+        else if (key == "infectionContagionTime")
         {
             infectionContagionTime = 50f * value;
             notifyObserversStatisticChanged(new NormalizedValue("infectionContagionTime", infectionContagionTime));
             return true;
         }
 
-        if (key == "infectionLatencyTime")
+        else if (key == "infectionLatencyTime")
         {
             infectionLatencyTime = 50f * value;
             notifyObserversStatisticChanged(new NormalizedValue("infectionLatencyTime", infectionLatencyTime));
             return true;
         }
-
+        else if (key == "personWalkSpeedAvg")
+        {
+            personWalkSpeedAvg = 10f * value;
+            notifyObserversStatisticChanged(new NormalizedValue("personWalkSpeedAvg", personWalkSpeedAvg));
+            return true;
+        }
         return false;
     }
 

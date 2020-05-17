@@ -25,7 +25,7 @@ public class Person : ParameterDrivenBehavior, IMaskable, IInfectable
     private void chooseDestinationAndSpeed()
     {
         chooseMovementDestination();
-        chooseWalkSpeed();
+        chooseWalkSpeed(simulationParameters.personWalkSpeedAvg);
     }
 
     private void saveNormalMaterial()
@@ -40,9 +40,9 @@ public class Person : ParameterDrivenBehavior, IMaskable, IInfectable
         GetComponent<NavMeshAgent>().destination = destination.gameObject.transform.position;
     }
 
-    private void chooseWalkSpeed()
+    public void chooseWalkSpeed(float average)
     {
-        GetComponent<NavMeshAgent>().speed = Random.Range(5, 10);
+        GetComponent<NavMeshAgent>().speed = Random.Range(.5f * average, 1.5f * average);
     }
 
     public void infect()
