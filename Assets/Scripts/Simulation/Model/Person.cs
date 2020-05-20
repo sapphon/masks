@@ -90,6 +90,7 @@ public class Person : ParameterDrivenBehavior, IMaskable, IInfectable
             {
                 isInfected = false;
                 isRecovered = true;
+                Destroy(this.GetComponent<Sneezer>());
                 chooseMaterial();
             }
         }

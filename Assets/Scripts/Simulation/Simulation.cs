@@ -147,7 +147,9 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedValueChange>, IObs
 
     public HashSet<Person> getUninfectedPeople()
     {
-        return new HashSet<Person>(people.FindAll(delegate(Person person) { return !person.isInfected; }));
+        return new HashSet<Person>(people.FindAll(delegate(Person person)
+        {
+            return !person.isInfected && !person.isRecovered; }));
     }
     
     public HashSet<Person> getRecoveredPeople()
