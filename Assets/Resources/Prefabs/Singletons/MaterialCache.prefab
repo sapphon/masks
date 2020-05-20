@@ -43,9 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 042058f1a65ed3248a5bd8951d9dfc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterInfectedAndMaskedMaterial: {fileID: 2100000, guid: 862f818bfb29c9e4cbbdefb4aefa7628,
+    type: 2}
   characterInfectedMaterial: {fileID: 2100000, guid: a3f7e585f9ac4dd429cf6acc35b393bb,
     type: 2}
   characterMaskedMaterial: {fileID: 2100000, guid: 9bc62108a4d9d7e4aa0cf46d5db6abad,
     type: 2}
-  characterInfectedAndMaskedMaterial: {fileID: 2100000, guid: 862f818bfb29c9e4cbbdefb4aefa7628,
+  characterRecoveredMaterial: {fileID: 2100000, guid: 2744c19e5ef795a4eb1273cca4ebc04c,
     type: 2}

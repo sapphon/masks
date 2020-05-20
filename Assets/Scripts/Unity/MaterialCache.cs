@@ -7,4 +7,6 @@ public class MaterialCache : MonoBehaviour
     public Material characterInfectedMaterial;
 
     public Material characterMaskedMaterial;
+    
+    public Material characterRecoveredMaterial;
 }

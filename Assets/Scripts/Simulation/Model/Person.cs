@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Experimental.U2D;
 
 public class Person : ParameterDrivenBehavior, IMaskable, IInfectable
 {
     private Location destination;
     private Material normalMaterial;
+    public bool isRecovered;
     public bool isInfected { get; private set; }
     private float timeOfInfection { get; set; }
     public bool isMasked { get; private set; }
@@ -87,6 +89,7 @@ public class Person : ParameterDrivenBehavior, IMaskable, IInfectable
                      simulationParameters.infectionLatencyTime < Time.time)
             {
                 isInfected = false;
+                isRecovered = true;
                 chooseMaterial();
             }
         }
@@ -102,7 +105,9 @@ public class Person : ParameterDrivenBehavior, IMaskable, IInfectable
         var renderer = GetComponent<MeshRenderer>();
         var materials = FindObjectOfType<MaterialCache>();
 
-        if (isInfected && isMasked)
+        if (isRecovered)
+            renderer.material = materials.characterRecoveredMaterial;
+        else if (isInfected && isMasked)
             renderer.material = materials.characterInfectedAndMaskedMaterial;
 
         else if (isInfected)

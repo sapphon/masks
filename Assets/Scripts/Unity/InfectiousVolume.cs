@@ -32,7 +32,7 @@ public class InfectiousVolume : ParameterDrivenBehavior
     private void OnTriggerExit(Collider other)
     {
         var exiter = other.gameObject.GetComponent<Person>();
-        if (exiter != null)
+        if (exiter != null && !exiter.isRecovered)
         {
             var timeSpentInArea = Time.timeSinceLevelLoad - objectsWithinVolume[other.gameObject];
             if (timeSpentInArea > simulationParameters.particulateInfectionTime * (exiter.isMasked ? 1.33 : 1))

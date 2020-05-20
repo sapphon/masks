@@ -149,6 +149,11 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedValueChange>, IObs
     {
         return new HashSet<Person>(people.FindAll(delegate(Person person) { return !person.isInfected; }));
     }
+    
+    public HashSet<Person> getRecoveredPeople()
+    {
+        return new HashSet<Person>(people.FindAll(delegate(Person person) { return person.isRecovered; }));
+    }
 
     public string getValue(string valueName)
     {
@@ -160,6 +165,8 @@ public class Simulation : MonoBehaviour, IObserver<INormalizedValueChange>, IObs
             case "populationUninfectedCount":
                 return this.getUninfectedPeople().Count.ToString();
                 break;
+            case "populationRecoveredCount":
+                return this.getRecoveredPeople().Count.ToString();
             case "timeElapsed":
                 return Time.timeSinceLevelLoad.ToString("N2");
             default:
